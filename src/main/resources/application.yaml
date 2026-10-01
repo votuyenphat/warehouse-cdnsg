@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: warehouse-cdnsg
+
+  # Cấu hình Database
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/cdnsg_db_v2}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect
+
+  # Cấu hình gửi Mail (SMTP)
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:porxy0309@gmail.com}
+    password: ${MAIL_PASSWORD:eirm ypjf fpsm dxyt}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+
+  # Cấu hình Upload File
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: ${PORT:8080}
+
+# Cấu hình phía Application tự định nghĩa
+app:
+  cors:
+    origin: https://quanlykhonsg.vercel.app
+  extinguisher:
+    warning-days: 15
+  secret-key: e6eed656-647c-4687-9c39-183ec2ea1f4f
+  admin:
+    email: vphat772@gmail.com
+    username: admin
+    password: admin123
+    full-name: Admin
+    school-id: ADMIN
+  expire: 300
+
+
+# Cấu hình Cloudinary
+cloudinary:
+  cloud_name: petrol-user
+  api_key: 532964342784824
+  api_secret: sMLf0G8d-QAGGZPFKfCeEYU3-mE
