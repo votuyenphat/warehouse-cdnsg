@@ -96,6 +96,26 @@ public class FireExtinguisherService {
         return repository.countByStatus(status);
     }
 
+    public java.util.Map<String, Long> getStats() {
+        java.util.List<Object[]> rows = repository.countGroupedByStatus();
+        java.util.Map<String, Long> stats = new java.util.HashMap<>();
+        stats.put("ok", 0L);
+        stats.put("warning", 0L);
+        stats.put("expired", 0L);
+        if (rows != null) {
+            for (Object[] row : rows) {
+                if (row != null && row.length >= 2 && row[0] != null && row[1] != null) {
+                    MaintenanceStatus status = (MaintenanceStatus) row[0];
+                    long count = ((Number) row[1]).longValue();
+                    if (status == MaintenanceStatus.OK) stats.put("ok", count);
+                    else if (status == MaintenanceStatus.WARNING) stats.put("warning", count);
+                    else if (status == MaintenanceStatus.EXPIRED) stats.put("expired", count);
+                }
+            }
+        }
+        return stats;
+    }
+
     public List<ExtinguisherHistory> getHistory(Long id) {
         getEntityById(id);
         return historyRepository.findByExtinguisherIdOrderByRechargeDateDesc(id);

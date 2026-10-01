@@ -32,4 +32,7 @@ public interface BorrowItemRepository extends JpaRepository<BorrowItem, Long> {
 
     @Query("SELECT COALESCE(SUM(i.availableQuantity), 0) FROM BorrowItem i")
     long sumAvailableQuantity();
+
+    @Query("SELECT COALESCE(SUM(i.totalQuantity), 0), COALESCE(SUM(i.availableQuantity), 0) FROM BorrowItem i")
+    java.util.List<Object[]> sumQuantities();
 }

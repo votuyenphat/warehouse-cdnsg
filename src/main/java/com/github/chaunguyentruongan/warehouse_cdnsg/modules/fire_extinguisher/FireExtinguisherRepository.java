@@ -34,6 +34,9 @@ public interface FireExtinguisherRepository extends JpaRepository<FireExtinguish
 
         long countByStatus(MaintenanceStatus status);
 
+        @Query("SELECT f.status, COUNT(f) FROM FireExtinguisher f GROUP BY f.status")
+        List<Object[]> countGroupedByStatus();
+
         Page<FireExtinguisher> findByLocationId(Long locationId, Pageable pageable);
 
         Page<FireExtinguisher> findByLocationZoneId(Long zoneId, Pageable pageable);

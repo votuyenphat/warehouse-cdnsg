@@ -20,6 +20,12 @@ public interface BorrowTicketRepository extends JpaRepository<BorrowTicket, Long
 
         long countByStatus(TicketStatus status);
 
+        @Query("SELECT " +
+               "SUM(CASE WHEN t.status = com.github.chaunguyentruongan.warehouse_cdnsg.modules.borrow_return.TicketStatus.PENDING THEN 1 ELSE 0 END), " +
+               "SUM(CASE WHEN t.status = com.github.chaunguyentruongan.warehouse_cdnsg.modules.borrow_return.TicketStatus.OVERDUE THEN 1 ELSE 0 END) " +
+               "FROM BorrowTicket t")
+        List<Object[]> countPendingAndOverdue();
+
         long countByEmail(String email);
 
         long countByEmailAndStatus(String email, TicketStatus status);

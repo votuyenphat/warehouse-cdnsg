@@ -84,6 +84,30 @@ public class ProjectorService {
         return projectorRepository.countByStatus(status);
     }
 
+    public java.util.Map<String, Object> getProjectorStats() {
+        java.util.List<Object[]> rows = projectorRepository.countGroupedByStatus();
+        long available = 0, borrowed = 0, maintenance = 0, broken = 0;
+        if (rows != null) {
+            for (Object[] row : rows) {
+                if (row != null && row.length >= 2 && row[0] != null && row[1] != null) {
+                    ProjectorStatus status = (ProjectorStatus) row[0];
+                    long count = ((Number) row[1]).longValue();
+                    if (status == ProjectorStatus.AVAILABLE) available = count;
+                    else if (status == ProjectorStatus.BORROWED) borrowed = count;
+                    else if (status == ProjectorStatus.UNDER_MAINTENANCE) maintenance = count;
+                    else if (status == ProjectorStatus.BROKEN) broken = count;
+                }
+            }
+        }
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        stats.put("total", available + borrowed + maintenance + broken);
+        stats.put("available", available);
+        stats.put("borrowed", borrowed);
+        stats.put("under_maintenance", maintenance);
+        stats.put("broken", broken);
+        return stats;
+    }
+
     @Transactional
     public Projector updateStatus(Long id, ProjectorStatus status) {
         Projector projector = findById(id);

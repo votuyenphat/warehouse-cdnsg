@@ -96,11 +96,7 @@ public class FireExtinguisherController {
     @Operation(summary = "Thống kê số lượng theo trạng thái")
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Long>> getStats() {
-        Map<String, Long> stats = new HashMap<>();
-        stats.put("ok", service.countByStatus(MaintenanceStatus.OK));
-        stats.put("warning", service.countByStatus(MaintenanceStatus.WARNING));
-        stats.put("expired", service.countByStatus(MaintenanceStatus.EXPIRED));
-        return ResponseEntity.ok(stats);
+        return ResponseEntity.ok(service.getStats());
     }
 
     @Operation(summary = "Thống kê nâng cao theo Khu vực và Loại bình")

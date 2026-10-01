@@ -71,18 +71,6 @@ public class ProjectorController {
     @Operation(summary = "Thống kê máy chiếu")
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Object>> getProjectorStats() {
-        Map<String, Object> stats = new HashMap<>();
-        long available = projectorService.countByStatus(ProjectorStatus.AVAILABLE);
-        long borrowed = projectorService.countByStatus(ProjectorStatus.BORROWED);
-        long maintenance = projectorService.countByStatus(ProjectorStatus.UNDER_MAINTENANCE);
-        long broken = projectorService.countByStatus(ProjectorStatus.BROKEN);
-
-        stats.put("total", available + borrowed + maintenance + broken);
-        stats.put("available", available);
-        stats.put("borrowed", borrowed);
-        stats.put("under_maintenance", maintenance);
-        stats.put("broken", broken);
-
-        return ResponseEntity.ok(stats);
+        return ResponseEntity.ok(projectorService.getProjectorStats());
     }
 }

@@ -104,10 +104,19 @@ public class MaterialService {
 
     public java.util.Map<String, Object> getMaterialStats() {
         java.util.Map<String, Object> stats = new java.util.HashMap<>();
-        stats.put("totalTypes", materialRepository.count()); // Tổng số loại
-        stats.put("totalItems", materialRepository.sumTotalInventory()); // Tổng số lượng tồn
-        stats.put("lowStockCount", materialRepository.countLowStock()); // Sắp hết
-        stats.put("okStockCount", materialRepository.countOkStock()); // Ổn định
+        List<Object[]> results = materialRepository.getAggregatedMaterialStats();
+        if (results != null && !results.isEmpty() && results.get(0) != null) {
+            Object[] row = results.get(0);
+            stats.put("totalTypes", row[0] != null ? ((Number) row[0]).longValue() : 0L);
+            stats.put("totalItems", row[1] != null ? ((Number) row[1]).longValue() : 0L);
+            stats.put("lowStockCount", row[2] != null ? ((Number) row[2]).longValue() : 0L);
+            stats.put("okStockCount", row[3] != null ? ((Number) row[3]).longValue() : 0L);
+        } else {
+            stats.put("totalTypes", 0L);
+            stats.put("totalItems", 0L);
+            stats.put("lowStockCount", 0L);
+            stats.put("okStockCount", 0L);
+        }
         return stats;
     }
 

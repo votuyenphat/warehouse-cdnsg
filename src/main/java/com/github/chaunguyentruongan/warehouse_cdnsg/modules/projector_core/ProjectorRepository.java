@@ -27,6 +27,9 @@ public interface ProjectorRepository extends JpaRepository<Projector, Long> {
         // Đếm số lượng máy chiếu theo trạng thái (Dùng cho báo cáo thống kê sau này)
         long countByStatus(ProjectorStatus status);
 
+        @Query("SELECT p.status, COUNT(p) FROM Projector p GROUP BY p.status")
+        java.util.List<Object[]> countGroupedByStatus();
+
         // Thêm câu query hỗ trợ tìm kiếm + lọc trạng thái
         @Query("SELECT p FROM Projector p WHERE " +
                         "(:status IS NULL OR p.status = :status) AND " +

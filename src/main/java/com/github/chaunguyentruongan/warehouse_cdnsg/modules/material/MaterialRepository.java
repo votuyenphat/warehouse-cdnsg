@@ -41,6 +41,12 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
     @Query("SELECT COALESCE(SUM(m.inventory), 0) FROM Material m")
     long sumTotalInventory();
 
+    @Query("SELECT COUNT(m), COALESCE(SUM(m.inventory), 0), " +
+           "SUM(CASE WHEN m.inventory < 5 THEN 1 ELSE 0 END), " +
+           "SUM(CASE WHEN m.inventory >= 5 THEN 1 ELSE 0 END) " +
+           "FROM Material m WHERE m.deleted = false")
+    List<Object[]> getAggregatedMaterialStats();
+
     @Query("SELECT COUNT(m) FROM Material m WHERE m.inventory < 5")
     long countLowStock();
 
