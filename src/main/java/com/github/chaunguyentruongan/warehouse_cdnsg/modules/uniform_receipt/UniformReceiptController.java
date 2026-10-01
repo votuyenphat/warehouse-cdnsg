@@ -47,6 +47,14 @@ public class UniformReceiptController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "Thống kê số phiếu xuất và tổng số lượng theo khoảng thời gian")
+    @GetMapping("/stats")
+    public ResponseEntity<java.util.Map<String, Object>> getStats(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate) {
+        return ResponseEntity.ok(receiptService.getStats(fromDate, toDate));
+    }
+
     @Operation(summary = "Lấy chi tiết phiếu xuất", description = "Tìm kiếm thông tin phiếu xuất đồng phục dựa trên ID")
     @GetMapping("/{id}")
     public ResponseEntity<UniformReceipt> getById(@PathVariable Long id) {

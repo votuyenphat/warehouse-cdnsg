@@ -15,4 +15,9 @@ public interface UniformReceiptRepository extends JpaRepository<UniformReceipt, 
         Page<UniformReceipt> searchAndFilter(
                         @Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate,
                         @Param("cusName") String cusName, Pageable pageable);
+
+        @Query("SELECT COUNT(r), COALESCE(SUM(r.totalQuantity), 0) FROM UniformReceipt r WHERE " +
+                        "(:fromDate IS NULL OR r.date >= :fromDate) AND " +
+                        "(:toDate IS NULL OR r.date <= :toDate)")
+        java.util.List<Object[]> getStatsByDateRange(@Param("fromDate") LocalDate fromDate, @Param("toDate") LocalDate toDate);
 }

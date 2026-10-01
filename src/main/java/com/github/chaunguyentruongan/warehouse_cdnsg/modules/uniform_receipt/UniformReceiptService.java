@@ -27,6 +27,21 @@ public class UniformReceiptService {
         return receiptRepository.searchAndFilter(from, to, cusName, page);
     }
 
+    public java.util.Map<String, Object> getStats(LocalDate fromDate, LocalDate toDate) {
+        java.util.List<Object[]> list = receiptRepository.getStatsByDateRange(fromDate, toDate);
+        long count = 0L;
+        long totalQty = 0L;
+        if (list != null && !list.isEmpty() && list.get(0) != null) {
+            Object[] row = list.get(0);
+            count = row[0] != null ? ((Number) row[0]).longValue() : 0L;
+            totalQty = row[1] != null ? ((Number) row[1]).longValue() : 0L;
+        }
+        java.util.Map<String, Object> stats = new java.util.HashMap<>();
+        stats.put("count", count);
+        stats.put("totalQuantity", totalQty);
+        return stats;
+    }
+
     @Transactional
     public UniformReceipt create(UniformReceiptRequest request) {
         UniformReceipt receipt = new UniformReceipt();
