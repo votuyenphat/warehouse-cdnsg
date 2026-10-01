@@ -4,9 +4,9 @@ spring:
 
   # Cấu hình Database
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/cdnsg_db_v2}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
+    url: ${DB_URL:jdbc:mysql://gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/cdnsg_db_v2?useSSL=true}
+    username: ${DB_USERNAME:2MyQkeEzEhL43dW.root}
+    password: ${DB_PASSWORD:ehxMS6s6KkyjurNs}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
